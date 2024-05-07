@@ -2,11 +2,6 @@ package entities;
 
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
-import java.io.BufferedInputStream;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import javax.imageio.ImageIO;
 
 import utils.LoadSave;
 
@@ -19,10 +14,13 @@ public class Player extends Entity {
     private int playerDir = -1;
     private boolean left, up, right, down, moving = false, attacking = false;
     private float playerSpeed = 2.0f;
+    private int width, height = 0;
 
-    public Player(float x, float  y) {
+    public Player(float x, float  y, int width, int height) {
         super(x, y);
         loadAnimations();
+        this.width = width;
+        this.height = height;
     }
 
     public void update() {
@@ -32,7 +30,7 @@ public class Player extends Entity {
     }
 
     public void render(Graphics g) {
-        g.drawImage(animations[playerAction][aniIndex], (int) x, (int) y, 256, 160, null);
+        g.drawImage(animations[playerAction][aniIndex], (int) x, (int) y, width, height, null);
     }
 
 

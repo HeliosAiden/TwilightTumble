@@ -1,17 +1,20 @@
 package main;
 
 import entities.Player;
+import levels.LevelManager;
+
 import java.awt.Graphics;
 
 public class Game implements Runnable {
 
     private Thread gameThread;
     private Player player;
+    private LevelManager levelManager;
     private final GameWindow gameWindow;
     private final GamePanel gamePanel;
     private final int FPS_SET = 120, UPS_SET = 200;
 
-    public final static float SCALE = 1.5f;
+    public final static float SCALE = 1.0f;
     public final static int TILES_DEFAULT_SIZE = 32, TILES_IN_WIDTH = 26, TILES_IN_HEIGHT = 14;
     public final static int TILES_SIZE = (int)(TILES_DEFAULT_SIZE * SCALE);
     public final static int GAME_WIDTH = TILES_SIZE * TILES_IN_WIDTH;
@@ -27,7 +30,8 @@ public class Game implements Runnable {
     }
 
     private void initClasses() {
-        this.player = new Player(200, 200);
+        this.player = new Player(200, 200, (int) (64 * SCALE), (int) (40 * SCALE));
+        this.levelManager = new LevelManager(this);
     }
 
     private void startGameLoop() {
@@ -37,9 +41,11 @@ public class Game implements Runnable {
 
     public void update() {
         player.update();
+        levelManager.update();
     }
 
     public void render(Graphics g) {
+        levelManager.draw(g);
         player.render(g);
     }
 
