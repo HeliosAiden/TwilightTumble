@@ -2,30 +2,35 @@ package entities;
 
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
-
 import main.Game;
-import utils.LoadSave;
-import static utils.HelpMethods.canMoveHere;
-
 import static utils.Constants.PlayerConstants.*;
+import static utils.HelpMethods.*;
+import utils.LoadSave;
 
 public class Player extends Entity {
     private BufferedImage[][] animations;
     private int aniTick, aniIndex, aniSpeed = 15;
     private int playerAction = IDLE;
     private int playerDir = -1;
-    private boolean left, up, right, down, moving = false, attacking = false;
+    private boolean left, up, right, down, moving = false, attacking = false, jump=false;
     private float playerSpeed = 2.0f;
     private int[][] lvlData;
     private float xDrawOffSet = 21 * Game.SCALE;
     private float yDrawOffSet = 4 * Game.SCALE;
+
+    // Jumping & gravity
+    private float airSpeed = 0f;
+    private float gravity = 0.04f * Game.SCALE;
+    private float jumpSpeed = -2.5f * Game.SCALE;
+    private float fallSpeedAfterCollision = 0.2f * Game.SCALE;
+    private boolean inAir = false;
 
 
 
     public Player(float x, float  y, int width, int height) {
         super(x, y, width, height);
         loadAnimations();
-        initHitBox(x, y, 20 * Game.SCALE, 28 * Game.SCALE);
+        initHitBox(x, y, 20 * Game.SCALE, 27 * Game.SCALE);
     }
 
     public void update() {
@@ -62,6 +67,14 @@ public class Player extends Entity {
             playerAction = IDLE;
         }
 
+        if (inAir) {
+            if (airSpeed < 0) {
+                playerAction = JUMP;
+            } else {
+                playerAction = FALLING;
+            }
+        }
+
         if (attacking) {
             playerAction = ATTACK_1;
         }
@@ -79,26 +92,70 @@ public class Player extends Entity {
     private void updatePos() {
         moving = false;
 
-        if (!left && !right && !up && !down) {
+        if (jump) {
+            jump();
+        }
+
+        if (!left && !right && !inAir) {
             return;
         }
 
-        float xSpeed = 0, ySpeed = 0;
+        float xSpeed = 0;
 
-        if (left && !right)
-            xSpeed = -playerSpeed;
-        else if (right && !left)
-            xSpeed = playerSpeed;
-        if (up && !down)
-            ySpeed=-playerSpeed;
-        else if (down && !up)
-            ySpeed=playerSpeed;
+        if (left)
+            xSpeed -= playerSpeed;
+        if (right)
+            xSpeed += playerSpeed;
 
-        if (canMoveHere(hitBox.x + xSpeed, hitBox.y + ySpeed, hitBox.width, hitBox.height, lvlData)) {
-            hitBox.x += xSpeed;
-            hitBox.y += ySpeed;
-            moving = true;
+        if (!inAir) {
+            if (!IsEntityOnFloor(hitBox, lvlData)) {
+                inAir = true;
+            }
         }
+
+        if (inAir) {
+        
+            if (canMoveHere(hitBox.x, hitBox.y + airSpeed, hitBox.width, hitBox.height, lvlData)){
+
+                hitBox.y += airSpeed;
+                airSpeed += gravity;
+                updateXPos(xSpeed);
+            } else {
+                hitBox.y = GetEntityYPosUnderRoofOrAboveFloor(hitBox, airSpeed);
+                if (airSpeed > 0) {
+                    resetInAir();
+                } else {
+                    airSpeed = fallSpeedAfterCollision;
+                }
+                updateXPos(xSpeed);
+            }
+        } else {
+            updateXPos(xSpeed);
+        }
+
+        moving = true;
+
+    }
+
+    private void jump() {
+        if (inAir)
+            return;
+        inAir = true;
+        airSpeed = jumpSpeed;
+    }
+
+    private void resetInAir() {
+        inAir = false;
+        airSpeed = 0;
+    }
+    
+    private void updateXPos(float xSpeed) {
+        if (canMoveHere(hitBox.x + xSpeed, hitBox.y, hitBox.width, hitBox.height, lvlData)) {
+            hitBox.x += xSpeed;
+        } else {
+            hitBox.x = GetEntityXPosNextToWall(hitBox, xSpeed);
+        }
+        
     }
 
     private void loadAnimations() {
@@ -116,6 +173,9 @@ public class Player extends Entity {
 
     public void loadLevelData(int[][] lvlData) {
         this.lvlData = lvlData;
+        if (!IsEntityOnFloor(hitBox, lvlData)) {
+            inAir = true;
+        }
     }
 
     public void resetDirBooleans() {
@@ -159,6 +219,10 @@ public class Player extends Entity {
 
     public void setDown(boolean down) {
         this.down = down;
+    }
+
+    public void setJump(boolean jump) {
+        this.jump = jump;
     }
 
 }

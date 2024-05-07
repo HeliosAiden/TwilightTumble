@@ -2,7 +2,6 @@ package main;
 
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowFocusListener;
-
 import javax.swing.JFrame;
 
 public class GameWindow {
@@ -15,7 +14,7 @@ public class GameWindow {
         jframe.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         jframe.add(gamePanel);
         jframe.setLocationRelativeTo(null);
-        jframe.setResizable(true);
+        jframe.setResizable(false);
         jframe.pack();
         jframe.setVisible(true);
         jframe.addWindowFocusListener(new WindowFocusListener() {
