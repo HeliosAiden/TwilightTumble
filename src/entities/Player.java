@@ -11,10 +11,10 @@ import static utils.Constants.PlayerConstants.*;
 
 public class Player extends Entity {
     private BufferedImage[][] animations;
-    private int AniTick, AniIndex, aniSpeed = 15;
+    private int aniTick, aniIndex, aniSpeed = 15;
     private int playerAction = IDLE;
     private int playerDir = -1;
-    private boolean left, up, right, down, moving;
+    private boolean left, up, right, down, moving = false, attacking = false;
     private float playerSpeed = 2.0f;
 
     public Player(float x, float  y) {
@@ -29,29 +29,44 @@ public class Player extends Entity {
     }
 
     public void render(Graphics g) {
-        g.drawImage(animations[playerAction][AniIndex], (int) x, (int) y, 256, 160, null);
+        g.drawImage(animations[playerAction][aniIndex], (int) x, (int) y, 256, 160, null);
     }
 
 
     private void updateAnimationTick() {
 
-        AniTick++;
-        if (AniTick >= aniSpeed) {
-            AniTick = 0;
-            AniIndex++;
-            if (AniIndex >= getSpriteAmount(playerAction)) {
-                AniIndex = 0;
+        aniTick++;
+        if (aniTick >= aniSpeed) {
+            aniTick = 0;
+            aniIndex++;
+            if (aniIndex >= getSpriteAmount(playerAction)) {
+                aniIndex = 0;
+                attacking = false;
             }
         }
     }
 
     private void setAnimation() {
+        int startAni = playerAction;
 
         if (moving) {
             playerAction = RUNNING;
         } else {
             playerAction = IDLE;
         }
+
+        if (attacking) {
+            playerAction = ATTACK_1;
+        }
+
+        if (startAni != playerAction) {
+            resetAniTick();
+        }
+    }
+
+    private void resetAniTick() {
+        aniTick = 0;
+        aniIndex = 0;
     }
 
     private void updatePos() {
@@ -65,7 +80,7 @@ public class Player extends Entity {
             x+=playerSpeed;
             moving = true;
         }
-        
+
         if (up && !down) {
             y-=playerSpeed;
             moving = true;
@@ -93,8 +108,17 @@ public class Player extends Entity {
         } catch (IOException e) {
             System.out.println("Error: " + e);
         }
+    }
 
-        
+    public void resetDirBooleans() {
+        left = false;
+        right = false;
+        up = false;
+        down = false;
+    }
+
+    public void setAttack(boolean attacking) {
+        this.attacking = attacking;
     }
 
     public boolean isLeft() {
@@ -104,7 +128,7 @@ public class Player extends Entity {
     public void setLeft(boolean left) {
         this.left = left;
     }
-    
+
     public boolean isUp() {
         return up;
     }

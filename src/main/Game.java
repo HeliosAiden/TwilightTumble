@@ -42,6 +42,10 @@ public class Game implements Runnable {
         return player;
     }
 
+    public void windowFocusLost() {
+        player.resetDirBooleans();
+    }
+
     @Override
     public void run() {
 
