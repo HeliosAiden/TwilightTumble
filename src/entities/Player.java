@@ -7,6 +7,9 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import javax.imageio.ImageIO;
+
+import utils.LoadSave;
+
 import static utils.Constants.PlayerConstants.*;
 
 public class Player extends Entity {
@@ -92,10 +95,7 @@ public class Player extends Entity {
 
     private void loadAnimations() {
 
-        try {
-            InputStream is = new BufferedInputStream(new FileInputStream("res\\player_sprites.png"));
-
-            BufferedImage img = ImageIO.read(is);
+            BufferedImage img = LoadSave.getSpriteAtLas(LoadSave.PLAYER_AT_LAS);
 
             animations = new BufferedImage[9][6];
 
@@ -104,10 +104,6 @@ public class Player extends Entity {
                     animations[j][i] = img.getSubimage(i * 64, j * 40, 64, 40);
                 }
             }
-            is.close();
-        } catch (IOException e) {
-            System.out.println("Error: " + e);
-        }
     }
 
     public void resetDirBooleans() {

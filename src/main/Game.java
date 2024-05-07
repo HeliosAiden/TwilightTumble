@@ -5,12 +5,17 @@ import java.awt.Graphics;
 
 public class Game implements Runnable {
 
+    private Thread gameThread;
+    private Player player;
     private final GameWindow gameWindow;
     private final GamePanel gamePanel;
-    private Thread gameThread;
-    private final int FPS_SET = 120;
-    private final int UPS_SET = 200;
-    private Player player;
+    private final int FPS_SET = 120, UPS_SET = 200;
+
+    public final static float SCALE = 1.5f;
+    public final static int TILES_DEFAULT_SIZE = 32, TILES_IN_WIDTH = 26, TILES_IN_HEIGHT = 14;
+    public final static int TILES_SIZE = (int)(TILES_DEFAULT_SIZE * SCALE);
+    public final static int GAME_WIDTH = TILES_SIZE * TILES_IN_WIDTH;
+    public final static int GAME_HEIGHT = TILES_SIZE * TILES_IN_HEIGHT;
 
     public Game() {
         initClasses();
