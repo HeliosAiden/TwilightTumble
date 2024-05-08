@@ -11,7 +11,6 @@ public class Player extends Entity {
     private BufferedImage[][] animations;
     private int aniTick, aniIndex, aniSpeed = 15;
     private int playerAction = IDLE;
-    private int playerDir = -1;
     private boolean left, up, right, down, moving = false, attacking = false, jump=false;
     private float playerSpeed = 2.0f;
     private int[][] lvlData;

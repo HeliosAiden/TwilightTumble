@@ -10,8 +10,8 @@ public class Constants {
         public static final int GROUND = 4;
         public static final int HIT = 5;
         public static final int ATTACK_1 = 6;
-        public static final int ATTACK_jUMP_1 = 7;
-        public static final int ATTACK_jUMP_2 = 8;
+        public static final int ATTACK_JUMP_1 = 7;
+        public static final int ATTACK_JUMP_2 = 8;
 
         public static int getSpriteAmount(int playerAction) {
             switch(playerAction) {
@@ -23,8 +23,8 @@ public class Constants {
                     return 4;
                 case JUMP:
                 case ATTACK_1:
-                case ATTACK_jUMP_1:
-                case ATTACK_jUMP_2:
+                case ATTACK_JUMP_1:
+                case ATTACK_JUMP_2:
                     return 3;
                 case GROUND:
                     return 2;

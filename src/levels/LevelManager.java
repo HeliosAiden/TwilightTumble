@@ -1,11 +1,9 @@
 package levels;
 
-import static main.Game.TILES_SIZE;
-
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
-
 import main.Game;
+import static main.Game.TILES_SIZE;
 import utils.LoadSave;
 
 public class LevelManager {
@@ -33,8 +31,8 @@ public class LevelManager {
     }
 
     public void draw(Graphics g) {
-        for (int j = 0; j < game.TILES_IN_HEIGHT; j++) {
-            for (int i = 0; i < game.TILES_IN_WIDTH; i++) {
+        for (int j = 0; j < Game.TILES_IN_HEIGHT; j++) {
+            for (int i = 0; i < Game.TILES_IN_WIDTH; i++) {
                 int index = levelOne.getSpriteIndex(i, j);
                 g.drawImage(levelSprite[index], TILES_SIZE * i, TILES_SIZE * j, TILES_SIZE, TILES_SIZE, null);
             }
