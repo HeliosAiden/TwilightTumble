@@ -12,7 +12,7 @@ public class Player extends Entity {
     private int aniTick, aniIndex, aniSpeed = 15;
     private int playerAction = IDLE;
     private boolean left, up, right, down, moving = false, attacking = false, jump=false;
-    private float playerSpeed = 1.0f;
+    private float playerSpeed = 1.0f * Game.SCALE;
     private int[][] lvlData;
     private float xDrawOffSet = 21 * Game.SCALE;
     private float yDrawOffSet = 4 * Game.SCALE;
