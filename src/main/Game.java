@@ -4,6 +4,7 @@ import gamestates.Gamestate;
 import gamestates.Menu;
 import gamestates.Playing;
 import java.awt.Graphics;
+import java.awt.desktop.QuitEvent;
 
 public class Game implements Runnable {
 
@@ -15,7 +16,7 @@ public class Game implements Runnable {
     private Playing playing;
     private Menu menu;
 
-    public final static float SCALE = 2.0f;
+    public final static float SCALE = 1.0f;
     public final static int TILES_DEFAULT_SIZE = 32, TILES_IN_WIDTH = 26, TILES_IN_HEIGHT = 14;
     public final static int TILES_SIZE = (int)(TILES_DEFAULT_SIZE * SCALE);
     public final static int GAME_WIDTH = TILES_SIZE * TILES_IN_WIDTH;
@@ -41,12 +42,12 @@ public class Game implements Runnable {
     }
 
     public void update() {
-        
+
         switch(Gamestate.state) {
             case MENU -> menu.update();
             case PLAYING -> playing.update();
-            default -> {
-            }
+            case OPTIONS, QUIT -> System.exit(0);
+            default -> System.exit(0);
 
         }
     }

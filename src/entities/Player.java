@@ -12,7 +12,7 @@ public class Player extends Entity {
     private int aniTick, aniIndex, aniSpeed = 15;
     private int playerAction = IDLE;
     private boolean left, up, right, down, moving = false, attacking = false, jump=false;
-    private float playerSpeed = 2.0f;
+    private float playerSpeed = 1.0f;
     private int[][] lvlData;
     private float xDrawOffSet = 21 * Game.SCALE;
     private float yDrawOffSet = 4 * Game.SCALE;
@@ -29,7 +29,7 @@ public class Player extends Entity {
     public Player(float x, float  y, int width, int height) {
         super(x, y, width, height);
         loadAnimations();
-        initHitBox(x, y, 20 * Game.SCALE, 27 * Game.SCALE);
+        initHitBox(x, y, (int) (20 * Game.SCALE), (int) (27 * Game.SCALE));
     }
 
     public void update() {
@@ -113,7 +113,7 @@ public class Player extends Entity {
         }
 
         if (inAir) {
-        
+
             if (canMoveHere(hitBox.x, hitBox.y + airSpeed, hitBox.width, hitBox.height, lvlData)){
 
                 hitBox.y += airSpeed;
@@ -147,14 +147,14 @@ public class Player extends Entity {
         inAir = false;
         airSpeed = 0;
     }
-    
+
     private void updateXPos(float xSpeed) {
         if (canMoveHere(hitBox.x + xSpeed, hitBox.y, hitBox.width, hitBox.height, lvlData)) {
             hitBox.x += xSpeed;
         } else {
             hitBox.x = GetEntityXPosNextToWall(hitBox, xSpeed);
         }
-        
+
     }
 
     private void loadAnimations() {
