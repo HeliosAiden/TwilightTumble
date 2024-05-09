@@ -4,7 +4,6 @@ import gamestates.Gamestate;
 import gamestates.Menu;
 import gamestates.Playing;
 import java.awt.Graphics;
-import java.awt.desktop.QuitEvent;
 
 public class Game implements Runnable {
 
