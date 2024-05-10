@@ -4,9 +4,10 @@ import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import utils.Constants.UI.PauseButtons;
 import utils.LoadSave;
+import ui.PauseButton;
 
 public class SoundButton extends PauseButton {
-    
+
     private BufferedImage[][] soundImgs;
     private boolean mouseOver, mousePressed;
     private boolean muted;
@@ -77,5 +78,5 @@ public class SoundButton extends PauseButton {
     public void setMousePressed(boolean mousePressed) {
         this.mousePressed = mousePressed;
     }
-    
+
 }
