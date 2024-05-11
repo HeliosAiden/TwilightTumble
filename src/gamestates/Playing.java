@@ -103,4 +103,10 @@ public class Playing extends State implements Statemethods {
     public void unpauseGame() {
         paused = false;
     }
+
+    public void mouseDragged(MouseEvent e) {
+        if (paused) {
+            pauseOverlay.mouseDragged(e);
+        }
+    }
 }

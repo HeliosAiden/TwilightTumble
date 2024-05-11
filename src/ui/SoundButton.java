@@ -24,7 +24,7 @@ public class SoundButton extends PauseButton {
         soundImgs = new BufferedImage[2][3];
         for (int j = 0; j < soundImgs.length; j++) {
             for (int i = 0; i < soundImgs[j].length; i++) {
-                soundImgs[j][i] = temp.getSubimage(i * PauseButtons.SOUND_SIZE, j * PauseButtons.SOUND_SIZE, PauseButtons.SOUND_SIZE, PauseButtons.SOUND_SIZE);
+                soundImgs[j][i] = temp.getSubimage(i * PauseButtons.SOUND_SIZE_DEFAULT, j * PauseButtons.SOUND_SIZE_DEFAULT, PauseButtons.SOUND_SIZE_DEFAULT, PauseButtons.SOUND_SIZE_DEFAULT);
             }
         }
     }
