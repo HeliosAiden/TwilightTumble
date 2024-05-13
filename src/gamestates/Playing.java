@@ -5,10 +5,14 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
+import java.awt.image.BufferedImage;
+import java.util.Random;
+
 import levels.LevelManager;
 import main.Game;
 import ui.PauseOverlay;
 import utils.LoadSave;
+import static utils.Constants.UI.Environments;
 
 public class Playing extends State implements Statemethods {
     private Player player;
@@ -22,10 +26,22 @@ public class Playing extends State implements Statemethods {
     private int lvlTlesWide = LoadSave.GetLevelData()[0].length;
     private int maxTilesOffset = lvlTlesWide - Game.TILES_IN_WIDTH;
     private int maxLvlOffsetX = maxTilesOffset * Game.TILES_SIZE;
+    private int smallCloudPos[];
+    private Random random = new Random();
+
+    private BufferedImage backgroundImg, bigCloud, smallCloud;
 
     public Playing(Game game) {
         super(game);
         initClasses();
+        backgroundImg = LoadSave.getSpriteAtLas(LoadSave.PLAYING_BG_IMAGE);
+        bigCloud = LoadSave.getSpriteAtLas(LoadSave.BIG_CLOUDS);
+        smallCloud = LoadSave.getSpriteAtLas(LoadSave.SMALL_CLOUDS);
+        smallCloudPos = new int[8];
+        for (int i = 0; i < smallCloudPos.length; i++) {
+            smallCloudPos[i] = (int)(90 * Game.SCALE) + random.nextInt((int)(100 * Game.SCALE));
+        }
+
     }
 
     private void initClasses() {
@@ -54,7 +70,7 @@ public class Playing extends State implements Statemethods {
             xLvlOffset += diff - rightBorder;
         }
         if (diff < leftBorder) {
-            xLvlOffset += diff - leftBorder; 
+            xLvlOffset += diff - leftBorder;
         }
 
         if (xLvlOffset > maxLvlOffsetX) {
@@ -67,6 +83,9 @@ public class Playing extends State implements Statemethods {
 
     @Override
     public void draw(Graphics g) {
+        g.drawImage(backgroundImg, 0, 0, Game.GAME_WIDTH, Game.GAME_HEIGHT, null);
+
+        drawClouds(g);
         levelManager.draw(g, xLvlOffset);
         player.render(g, xLvlOffset);
 
@@ -74,6 +93,16 @@ public class Playing extends State implements Statemethods {
             g.setColor(new Color(0,0,0,200));
             g.fillRect(0, 0, Game.GAME_WIDTH, Game.GAME_HEIGHT);
             pauseOverlay.draw(g);
+        }
+    }
+
+    private void drawClouds(Graphics g) {
+        for (int i = 0; i < 3; i++) {
+            g.drawImage(bigCloud, 0 + i * Environments.BIG_CLOUD_WIDTH - (int) (xLvlOffset * 0.3), (int) (204 * Game.SCALE), Environments.BIG_CLOUD_WIDTH, Environments.BIG_CLOUD_HEIGHT, null);
+        }
+
+        for (int i =0; i <smallCloudPos.length; i ++) {
+            g.drawImage(smallCloud, Environments.SMALL_CLOUD_WIDTH * 4 * i - (int) (xLvlOffset * 0.7), smallCloudPos[i], Environments.SMALL_CLOUD_WIDTH, Environments.SMALL_CLOUD_HEIGHT, null);
         }
     }
 
